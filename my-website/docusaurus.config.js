@@ -69,10 +69,10 @@ const config = {
             id: 'openapi',
             spec: 'api_specs/api_videorooms.yaml',
           },
-          {
-            id: 'asyncapi',
-            spec: 'api_specs/asyncpi.yaml',
-          },
+          // {
+          //   id: 'asyncapi',
+          //   spec: 'api_specs/asyncapi.yaml',
+          // },
         ],
         theme: {
           primaryColor: '#1890ff',
