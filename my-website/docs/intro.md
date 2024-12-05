@@ -1,47 +1,62 @@
 ---
+title: Домашняя страница
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Карточка сервиса: **PETSTORE**
 
-Let's discover **Docusaurus in less than 5 minutes**.
+:::info
+**PETSTORE** — это онлайн-платформа для покупки домашних животных. Сервис включает в себя каталог питомцев, систему обработки заказов, доставку. PETSTORE работает через веб-интерфейс и мобильные приложения, поддерживая удобный пользовательский интерфейс и быстрые способы оплаты.
+:::
 
-## Getting Started
+---
 
-Get started by **creating a new site**.
+## Основные функциональные возможности
+- **Каталог питомцев**: Возможность создавать / изменять / просматривать / удалять питомцев.
+- **Управление заказами**: Создание / удаление заказа.
+- **Управление аккаунтом пользователя**.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+---
 
-### What you'll need
+## Архитектура
+- **Тип**: Монолитная архитектура.
+- **Технологии**:
+  - **Backend**: Java/Kotlin, PostgreSQL, Kafka, Redis, RabbitMQ.
+  - **Frontend**: React, Redux.
+  - **Мобильное приложение**: React Native.
+  - **API**: RESTful API для взаимодействия с клиентскими приложениями.
+  - **Хостинг**: Yandex Cloud, S3 для хранения изображений и данных.
+  
+---
 
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+## Статус сервиса
+- **Текущая версия**: 1.3.0
+- **Дата последнего обновления**: 2024-12-01
+- **Режим работы**: 24/7
+- **Доступность**: 99.9% Uptime (ежемесячная статистика).
 
-## Generate a new site
+---
 
-Generate a new Docusaurus site using the **classic template**.
+## Логи
+- Логи работы сервиса и ошибок можно просматривать по следующему адресу:
+  - [Логи сервиса](https://logs.petstore.com)
+  
+- Используемая система для логирования: **ElasticSearch** с Grafana для визуализации.
 
-The classic template will automatically be added to your project after you run the command:
+---
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+## Метрики
+- **Метрики производительности**:
+  - Время отклика API: среднее — 120 ms, пик — 500 ms.
+  - Время загрузки страницы: среднее — 2.5 секунды.
+  - Ошибки запросов: `< 1%`  
+- Метрики можно отслеживать через [систему мониторинга](https://metrics.petstore.com).
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+---
 
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+## Контакты команды
+- **Разработчики**: devs@petstore.com
+- **Поддержка клиентов**: support@petstore.com
+- **Вопросы по безопасности**: security@petstore.com
+- **Контакты для партнёрства**: partners@petstore.com
+- **Telegram канал**: [@petstore-dev](https://t.me/petstore-dev)
