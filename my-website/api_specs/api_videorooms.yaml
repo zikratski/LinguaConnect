@@ -1,0 +1,190 @@
+openapi: 3.0.0
+info:
+  title: API каталога видеокомнат
+  version: 1.0.0
+  description: API для управления главным экраном платформы видеокомнат для проведения языковых клубов.
+paths:
+  /conferences:
+    get:
+      summary: Получение списка видеокомнат
+      parameters:
+        - name: cursor
+          in: query
+          description: Курсор для получения следующего набора видеокомнат
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Максимальное количество видеокомнат для возврата
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 100
+        - name: language
+          in: query
+          description: Фильтр по языку видеокомнаты
+          required: false
+          schema:
+            type: string
+            enum:
+              - EN
+              - RU
+              - ES
+              - FR
+              - IT
+              - PT
+              - ZH
+              - JA
+              - AR
+              - HI
+              - KO
+        - name: level
+          in: query
+          description: Фильтр по уровню языка
+          required: false
+          schema:
+            type: string
+            enum:
+              - Beginner
+              - Intermediate
+              - Advanced
+        - name: min_participants
+          in: query
+          description: Минимальное количество участников видеокомнаты
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+        - name: max_participants
+          in: query
+          description: Максимальное количество участников видеокомнаты
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        '200':
+          description: Список комнат с курсором для следующей страницы
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Conference'
+                  next_cursor:
+                    type: string
+                    nullable: true
+  /conferences/{conference_id}:
+    get:
+      summary: Получение информации о конкретной видеокомнате
+      parameters:
+        - name: conference_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID видеокомнаты
+      responses:
+        '200':
+          description: Детальная информация о видеокомнате
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conference'
+  /conferences/create:
+    post:
+      summary: Создание новой видеокомнаты
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConferenceRequest'
+      responses:
+        '201':
+          description: видеокомната успешно создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conference'
+components:
+  schemas:
+    Conference:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        language:
+          type: string
+          enum:
+            - EN
+            - RU
+            - ES
+            - FR
+            - IT
+            - PT
+            - ZH
+            - JA
+            - AR
+            - HI
+            - KO
+        level:
+          type: string
+          enum:
+            - Beginner
+            - Intermediate
+            - Advanced
+        max_participants:
+          type: integer
+        participants:
+          type: array
+          items:
+            type: string
+        link:
+          type: string
+      required:
+        - id
+        - name
+        - language
+        - level
+    CreateConferenceRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        language:
+          type: string
+          enum:
+            - EN
+            - RU
+            - ES
+            - FR
+            - IT
+            - PT
+            - ZH
+            - JA
+            - AR
+            - HI
+            - KO
+        level:
+          type: string
+          enum:
+            - Beginner
+            - Intermediate
+            - Advanced
+      required:
+        - name
+        - language
+        - level

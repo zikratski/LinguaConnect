@@ -1,0 +1,184 @@
+asyncapi: 3.0.0
+info:
+  title: Signaling Server API
+  version: 1.0.0
+  description: >
+    API для общения клиентов с сигнальным сервером для управления
+    WebRTC-соединениями.
+  license:
+    name: MIT
+servers:
+  signaling:
+    host: signaling.example.com
+    protocol: wss
+    description: WebSocket-сервер для управления сигнализацией.
+channels:
+  /join:
+    address: /join
+    messages:
+      publish.message:
+        name: JoinResponse
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            success:
+              type: boolean
+              description: Успешность подключения.
+            message:
+              type: string
+              description: Описание результата.
+      subscribe.message:
+        name: JoinRequest
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            roomId:
+              type: string
+              description: Идентификатор комнаты.
+            userId:
+              type: string
+              description: Идентификатор пользователя.
+    description: Пользователь подключается к комнате.
+  /sdp:
+    address: /sdp
+    messages:
+      publish.message:
+        name: SDPResponse
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - offer
+                - answer
+              description: Тип SDP.
+            sdp:
+              type: string
+              description: SDP строка.
+      subscribe.message:
+        name: SDPRequest
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - offer
+                - answer
+              description: Тип SDP.
+            sdp:
+              type: string
+              description: SDP строка.
+    description: Обмен SDP для установления соединения.
+  /ice-candidate:
+    address: /ice-candidate
+    messages:
+      publish.message:
+        name: ICECandidateResponse
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            candidate:
+              type: string
+              description: ICE-кандидат.
+      subscribe.message:
+        name: ICECandidateRequest
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            candidate:
+              type: string
+              description: ICE-кандидат.
+    description: Обмен ICE-кандидатами.
+  /leave:
+    address: /leave
+    messages:
+      publish.message:
+        name: LeaveResponse
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            success:
+              type: boolean
+              description: Успешность операции.
+            message:
+              type: string
+              description: Описание результата.
+      subscribe.message:
+        name: LeaveRequest
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            roomId:
+              type: string
+              description: Идентификатор комнаты.
+            userId:
+              type: string
+              description: Идентификатор пользователя.
+    description: Пользователь отключается от комнаты.
+operations:
+  /join.publish:
+    action: receive
+    channel:
+      $ref: '#/channels/~1join'
+    summary: Сервер отвечает на запрос подключения.
+    messages:
+      - $ref: '#/channels/~1join/messages/publish.message'
+  /join.subscribe:
+    action: send
+    channel:
+      $ref: '#/channels/~1join'
+    summary: Клиент отправляет запрос на подключение к комнате.
+    messages:
+      - $ref: '#/channels/~1join/messages/subscribe.message'
+  /sdp.publish:
+    action: receive
+    channel:
+      $ref: '#/channels/~1sdp'
+    summary: Сервер отправляет SDP клиенту.
+    messages:
+      - $ref: '#/channels/~1sdp/messages/publish.message'
+  /sdp.subscribe:
+    action: send
+    channel:
+      $ref: '#/channels/~1sdp'
+    summary: Клиент отправляет SDP.
+    messages:
+      - $ref: '#/channels/~1sdp/messages/subscribe.message'
+  /ice-candidate.publish:
+    action: receive
+    channel:
+      $ref: '#/channels/~1ice-candidate'
+    summary: Сервер отправляет ICE-кандидата клиенту.
+    messages:
+      - $ref: '#/channels/~1ice-candidate/messages/publish.message'
+  /ice-candidate.subscribe:
+    action: send
+    channel:
+      $ref: '#/channels/~1ice-candidate'
+    summary: Клиент отправляет ICE-кандидата.
+    messages:
+      - $ref: '#/channels/~1ice-candidate/messages/subscribe.message'
+  /leave.publish:
+    action: receive
+    channel:
+      $ref: '#/channels/~1leave'
+    summary: Сервер подтверждает отключение.
+    messages:
+      - $ref: '#/channels/~1leave/messages/publish.message'
+  /leave.subscribe:
+    action: send
+    channel:
+      $ref: '#/channels/~1leave'
+    summary: Клиент отправляет запрос на выход из комнаты.
+    messages:
+      - $ref: '#/channels/~1leave/messages/subscribe.message'
